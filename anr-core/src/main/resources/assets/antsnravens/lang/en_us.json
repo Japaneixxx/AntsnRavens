@@ -1,5 +1,29 @@
 {
-  "itemGroup.antsnravens": "Example Mod Tab",
-  "block.antsnravens.example_block": "Example Block",
-  "item.antsnravens.example_item": "Example Item"
+  "itemGroup.antsnravens": "Ants 'n Ravens",
+  "block.antsnravens.queen_chamber": "Queen Chamber",
+  "block.antsnravens.sub_colony_node": "Sub-Colony Node",
+  "item.antsnravens.queen_chamber": "Queen Chamber",
+  "item.antsnravens.sub_colony_node": "Sub-Colony Node",
+  "item.antsnravens.raven_terminal": "Raven Terminal",
+  "item.antsnravens.pheromone_brush": "Pheromone Brush",
+  "item.antsnravens.training_whistle": "Training Whistle",
+  "block.antsnravens.raven_translator": "Raven Translator",
+  "item.antsnravens.raven_translator": "Raven Translator",
+  "container.antsnravens.raven_terminal": "Raven Terminal",
+  "message.antsnravens.translator_unlinked": "No Queen Chamber was found near this Raven Translator.",
+  "screen.antsnravens.connected_sub_colonies": "Connected sub-colonies: %s",
+  "screen.antsnravens.queen_inventory": "Queen Chamber (Central Stock)",
+  "screen.antsnravens.sub_colony_inventory": "Sub-Colonies: %s",
+  "screen.antsnravens.connected_chests": "Connected chests: %s | Total slots: %s",
+  "message.antsnravens.terminal": "Raven Terminal: %s | queens: %s | nodes: %s | scan radius: %s",
+  "message.antsnravens.queen_marked": "Queen Chamber marked as the colony network hub.",
+  "message.antsnravens.node_marked": "Sub-Colony Node marked for network discovery.",
+  "message.antsnravens.node_selected": "Sub-Colony Node selected! Now click the Queen Chamber to pair.",
+  "message.antsnravens.select_node_first": "Select a Sub-Colony Node first.",
+  "message.antsnravens.invalid_pair": "The selected Sub-Colony Node is no longer available.",
+  "message.antsnravens.node_linked": "Sub-Colony successfully linked to the Queen Chamber!"
+  ,"message.antsnravens.inventory_out_of_range": "That inventory is more than 5 blocks from the selected Sub-Colony Node."
+  ,"message.antsnravens.inventory_linked": "Inventory linked to the Sub-Colony successfully!"
+  ,"message.antsnravens.crow_summoned": "Companion Crow summoned for training."
+  ,"message.antsnravens.crow_already_present": "Your Companion Crow is already nearby."
 }

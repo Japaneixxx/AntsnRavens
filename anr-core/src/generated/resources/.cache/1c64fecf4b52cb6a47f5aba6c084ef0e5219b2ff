@@ -1,0 +1,12 @@
+// 26.3	2026-10-09T22:07:44.2052297	antsnravens-global/Model Definitions - antsnravens
+4202c13356246166a8fb331d52d9359004e0e2ba assets/antsnravens/blockstates/raven_translator.json
+897e30611edaab54a9d06a8b76b6533f358eef40 assets/antsnravens/items/pheromone_brush.json
+7bf8eaa5da96d32511e6682a3fcc57c75288de58 assets/antsnravens/items/queen_chamber.json
+3b0d6ad27301d2d5e489bdc9eb2a355b1da10454 assets/antsnravens/items/raven_terminal.json
+e1b5028ea708780412c8ae72ffd0ca4b0f590591 assets/antsnravens/items/raven_translator.json
+baaf400d539b3df37c628862b13720977d8f53f4 assets/antsnravens/items/sub_colony_node.json
+df73e0771150e68d913dc6e0cd7ff3c2d416d6f5 assets/antsnravens/items/training_whistle.json
+17f1af4bbdea4e55296ce492f287e04a47c59761 assets/antsnravens/models/block/raven_translator.json
+1a9de0277870e55e9d1c5d7cd951b1bdd3dc6401 assets/antsnravens/models/item/pheromone_brush.json
+c7cbb2baf98992a382b84350288758dc12766bfc assets/antsnravens/models/item/raven_terminal.json
+34b87135021995e8090c4e8488749df3df20069e assets/antsnravens/models/item/training_whistle.json

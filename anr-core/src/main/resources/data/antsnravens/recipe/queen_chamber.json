@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "DCD",
+    "CRC",
+    "DCD"
+  ],
+  "key": {
+    "D": "minecraft:deepslate",
+    "C": "minecraft:amethyst_shard",
+    "R": "minecraft:redstone_block"
+  },
+  "result": {
+    "id": "antsnravens:queen_chamber",
+    "count": 1
+  }
+}

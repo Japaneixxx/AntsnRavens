@@ -1,0 +1,21 @@
+plugins {
+    id 'net.neoforged.moddev' version '2.0.148' apply false
+}
+
+subprojects {
+    apply plugin: 'java'
+
+    java {
+        toolchain {
+            languageVersion = JavaLanguageVersion.of(25)
+        }
+    }
+
+    repositories {
+        mavenCentral()
+        maven {
+            name = "NeoForged"
+            url = "https://maven.neoforged.net/releases"
+        }
+    }
+}

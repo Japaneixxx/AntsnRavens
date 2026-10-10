@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "H",
+    "S",
+    "F"
+  ],
+  "key": {
+    "H": "minecraft:honeycomb",
+    "S": "minecraft:stick",
+    "F": "minecraft:feather"
+  },
+  "result": {
+    "id": "antsnravens:pheromone_brush",
+    "count": 1
+  }
+}

@@ -1,127 +1,65 @@
 package com.japaneixxx.antsnravens;
 
+import com.japaneixxx.antsnravens.init.ModBlockEntities;
+import com.japaneixxx.antsnravens.init.ModBlocks;
+import com.japaneixxx.antsnravens.init.ModItems;
+import com.japaneixxx.antsnravens.init.ModDataComponents;
+import com.japaneixxx.antsnravens.init.ModMenuTypes;
+import com.japaneixxx.antsnravens.init.ModEntities;
+import com.japaneixxx.antsnravens.init.ModParticles;
+import com.japaneixxx.antsnravens.init.ModEntityAttributes;
+import com.japaneixxx.antsnravens.init.ModCapabilities;
+import com.japaneixxx.antsnravens.data.ModDataGenerators;
+import com.japaneixxx.antsnravens.client.ModClientEvents;
 import com.mojang.logging.LogUtils;
-import net.minecraft.client.Minecraft;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
-import net.minecraft.world.food.FoodProperties;
-import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.CreativeModeTabs;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.state.BlockBehaviour;
-import net.minecraft.world.level.material.MapColor;
-import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
-import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.ModContainer;
-import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.config.ModConfig;
-import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
-import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
-import net.neoforged.neoforge.common.NeoForge;
-import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
-import net.neoforged.neoforge.event.server.ServerStartingEvent;
-import net.neoforged.neoforge.registries.DeferredBlock;
 import net.neoforged.neoforge.registries.DeferredHolder;
-import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.slf4j.Logger;
 
-// The value here should match an entry in the META-INF/neoforge.mods.toml file
-@Mod(Antsnravens.MODID)
-public class Antsnravens {
-    // Define mod id in a common place for everything to reference
-    public static final String MODID = "antsnravens";
-    // Directly reference a slf4j logger
+@Mod(AntsNRavensCore.MOD_ID)
+public final class AntsNRavensCore {
+    public static final String MOD_ID = "antsnravens";
     private static final Logger LOGGER = LogUtils.getLogger();
-    // Create a Deferred Register to hold Blocks which will all be registered under the "antsnravens" namespace
-    public static final DeferredRegister.Blocks BLOCKS = DeferredRegister.createBlocks(MODID);
-    // Create a Deferred Register to hold Items which will all be registered under the "antsnravens" namespace
-    public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(MODID);
-    // Create a Deferred Register to hold CreativeModeTabs which will all be registered under the "antsnravens" namespace
-    public static final DeferredRegister<CreativeModeTab> CREATIVE_MODE_TABS = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, MODID);
+    public static final DeferredRegister<CreativeModeTab> CREATIVE_TABS =
+            DeferredRegister.create(Registries.CREATIVE_MODE_TAB, MOD_ID);
+    public static final DeferredHolder<CreativeModeTab, CreativeModeTab> MAIN_TAB =
+            CREATIVE_TABS.register("main", () -> CreativeModeTab.builder()
+                    .title(Component.translatable("itemGroup.antsnravens"))
+                    .icon(() -> ModItems.RAVEN_TERMINAL.get().getDefaultInstance())
+                    .withTabsBefore(CreativeModeTabs.SPAWN_EGGS)
+                    .displayItems((parameters, output) -> {
+                        output.accept(ModItems.RAVEN_TERMINAL.get());
+                        output.accept(ModItems.PHEROMONE_BRUSH.get());
+                        output.accept(ModItems.TRAINING_WHISTLE.get());
+                        output.accept(ModBlocks.QUEEN_CHAMBER_ITEM.get());
+                        output.accept(ModBlocks.SUB_COLONY_NODE_ITEM.get());
+                        output.accept(ModBlocks.RAVEN_TRANSLATOR_ITEM.get());
+                    }).build());
 
-    // Creates a new Block with the id "antsnravens:example_block", combining the namespace and path
-    public static final DeferredBlock<Block> EXAMPLE_BLOCK = BLOCKS.registerSimpleBlock("example_block", BlockBehaviour.Properties.of().mapColor(MapColor.STONE));
-    // Creates a new BlockItem with the id "antsnravens:example_block", combining the namespace and path
-    public static final DeferredItem<BlockItem> EXAMPLE_BLOCK_ITEM = ITEMS.registerSimpleBlockItem("example_block", EXAMPLE_BLOCK);
-
-    // Creates a new food item with the id "antsnravens:example_id", nutrition 1 and saturation 2
-    public static final DeferredItem<Item> EXAMPLE_ITEM = ITEMS.registerSimpleItem("example_item", new Item.Properties().food(new FoodProperties.Builder()
-            .alwaysEdible().nutrition(1).saturationModifier(2f).build()));
-
-    // Creates a creative tab with the id "antsnravens:example_tab" for the example item, that is placed after the combat tab
-    public static final DeferredHolder<CreativeModeTab, CreativeModeTab> EXAMPLE_TAB = CREATIVE_MODE_TABS.register("example_tab", () -> CreativeModeTab.builder()
-            .title(Component.translatable("itemGroup.antsnravens"))
-            .withTabsBefore(CreativeModeTabs.COMBAT)
-            .icon(() -> EXAMPLE_ITEM.get().getDefaultInstance())
-            .displayItems((parameters, output) -> {
-                output.accept(EXAMPLE_ITEM.get()); // Add the example item to the tab. For your own tabs, this method is preferred over the event
-            }).build());
-
-    // The constructor for the mod class is the first code that is run when your mod is loaded.
-    // FML will recognize some parameter types like IEventBus or ModContainer and pass them in automatically.
-    public Antsnravens(IEventBus modEventBus, ModContainer modContainer) {
-        // Register the commonSetup method for modloading
-        modEventBus.addListener(this::commonSetup);
-
-        // Register the Deferred Register to the mod event bus so blocks get registered
-        BLOCKS.register(modEventBus);
-        // Register the Deferred Register to the mod event bus so items get registered
-        ITEMS.register(modEventBus);
-        // Register the Deferred Register to the mod event bus so tabs get registered
-        CREATIVE_MODE_TABS.register(modEventBus);
-
-        // Register ourselves for server and other game events we are interested in.
-        // Note that this is necessary if and only if we want *this* class (Antsnravens) to respond directly to events.
-        // Do not add this line if there are no @SubscribeEvent-annotated functions in this class, like onServerStarting() below.
-        NeoForge.EVENT_BUS.register(this);
-
-        // Register the item to a creative tab
-        modEventBus.addListener(this::addCreative);
-
-        // Register our mod's ModConfigSpec so that FML can create and load the config file for us
-        modContainer.registerConfig(ModConfig.Type.COMMON, Config.SPEC);
-    }
-
-    private void commonSetup(final FMLCommonSetupEvent event) {
-        // Some common setup code
-        LOGGER.info("HELLO FROM COMMON SETUP");
-
-        if (Config.logDirtBlock)
-            LOGGER.info("DIRT BLOCK >> {}", BuiltInRegistries.BLOCK.getKey(Blocks.DIRT));
-
-        LOGGER.info(Config.magicNumberIntroduction + Config.magicNumber);
-
-        Config.items.forEach((item) -> LOGGER.info("ITEM >> {}", item.toString()));
-    }
-
-    // Add the example block item to the building blocks tab
-    private void addCreative(BuildCreativeModeTabContentsEvent event) {
-        if (event.getTabKey() == CreativeModeTabs.BUILDING_BLOCKS)
-            event.accept(EXAMPLE_BLOCK_ITEM);
-    }
-
-    // You can use SubscribeEvent and let the Event Bus discover methods to call
-    @SubscribeEvent
-    public void onServerStarting(ServerStartingEvent event) {
-        // Do something when the server starts
-        LOGGER.info("HELLO from server starting");
-    }
-
-    // You can use EventBusSubscriber to automatically register all static methods in the class annotated with @SubscribeEvent
-    @EventBusSubscriber(modid = MODID, bus = EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
-    public static class ClientModEvents {
-        @SubscribeEvent
-        public static void onClientSetup(FMLClientSetupEvent event) {
-            // Some client setup code
-            LOGGER.info("HELLO FROM CLIENT SETUP");
-            LOGGER.info("MINECRAFT NAME >> {}", Minecraft.getInstance().getUser().getName());
-        }
+    public AntsNRavensCore(IEventBus modBus, ModContainer modContainer) {
+        modBus.addListener(ModDataGenerators::gatherData);
+        ModBlocks.register(modBus);
+        ModItems.register(modBus);
+        ModDataComponents.register(modBus);
+        ModBlockEntities.BLOCK_ENTITIES.register(modBus);
+        ModEntities.register(modBus);
+        ModParticles.register(modBus);
+        modBus.addListener(ModEntityAttributes::register);
+        modBus.addListener(ModCapabilities::register);
+        ModMenuTypes.MENUS.register(modBus);
+        modBus.addListener(ModClientEvents::registerScreens);
+        modBus.addListener(ModClientEvents::registerRenderers);
+        modBus.addListener(ModClientEvents::registerParticles);
+        CREATIVE_TABS.register(modBus);
+        modContainer.registerConfig(ModConfig.Type.SYNCED, ModConfigSpecProvider.SPEC);
+        LOGGER.info("Ants 'n Ravens core initialized");
     }
 }

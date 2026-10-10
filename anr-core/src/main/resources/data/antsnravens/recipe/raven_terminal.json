@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " F ",
+    "ERE",
+    " R "
+  ],
+  "key": {
+    "F": "minecraft:feather",
+    "E": "minecraft:echo_shard",
+    "R": "minecraft:redstone"
+  },
+  "result": {
+    "id": "antsnravens:raven_terminal",
+    "count": 1
+  }
+}
